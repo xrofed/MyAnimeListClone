@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteBase /
+
+# 1. Robots.txt Otomatis
+RewriteRule ^robots\.txt$ index.php?route=robots [L]
+
+# 2. Sitemap Otomatis (XML Biasa & GZIP)
+# Jika akses .xml.gz, kirim parameter gz=1 ke php
+RewriteRule ^sitemap\.xml\.gz$ index.php?route=sitemap&gz=1 [L]
+RewriteRule ^sitemap\.xml$ index.php?route=sitemap [L]
+
+# 3. Pretty URL untuk Halaman Anime
+# Mengubah domain.com/anime/123/judul -> index.php?id=123
+RewriteRule ^anime/([0-9]+)/(.*)$ index.php?route=detail&id=$1 [L]
+RewriteRule ^anime/([0-9]+)$ index.php?route=detail&id=$1 [L]
+
+# 4. Halaman Search
+RewriteRule ^search/(.*)$ index.php?route=search&q=$1 [L]
+
+# 5. Default Route (Semua request lain ke index.php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
